@@ -3,8 +3,7 @@ Tapir is a tool that can efficiently enable and disable for AWS CloudWatchAlarm 
 
 
 ## demo
-![tapir](https://user-images.githubusercontent.com/6120093/111757203-6d221700-88de-11eb-9ac2-367f8cbe7aed.gif)
-
+![tapir](https://user-images.githubusercontent.com/6120093/111776182-09efaf00-88f5-11eb-98d9-760e2b5a802c.gif)
 
 # Install
 ## Homebrew (macOS and Linux)
