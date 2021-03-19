@@ -1,9 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"time"
-
 	"tapir/mypkg"
 
 	"github.com/spf13/cobra"
@@ -19,11 +16,6 @@ var statusCmd = &cobra.Command{
 	Long:  "Displays the 'ActinsEnabled' and 'State' status of the CloudWatchAlarms",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		start := time.Now()
-		// fmt.Println(args)
-		// fmt.Println(tags["project"])
-		// fmt.Println(tags["env"])
-
 		prefix := viper.GetString("prefix")
 		region := viper.GetString("region")
 		tags := viper.GetStringMapString("tags")
@@ -33,13 +25,17 @@ var statusCmd = &cobra.Command{
 
 		// テーブル形式で出力
 		mypkg.OutputTable(metricAlarms)
-
-		end := time.Now()
-		fmt.Println(end.Sub(start))
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(statusCmd)
-	// statusCmd.Flags().StringToStringVarP(&tags, "tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
+
+	statusCmd.Flags().StringP("prefix", "p", "", "Alam Name Preix")
+	statusCmd.Flags().StringP("region", "r", "us-east-1", "Target AWS Region")
+	statusCmd.Flags().StringToStringP("tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
+
+	viper.BindPFlag("prefix", statusCmd.Flags().Lookup("prefix"))
+	viper.BindPFlag("region", statusCmd.Flags().Lookup("region"))
+	viper.BindPFlag("tags", statusCmd.Flags().Lookup("tags"))
 }

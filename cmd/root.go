@@ -31,13 +31,14 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringP("prefix", "p", "", "Alam Name Preix")
-	rootCmd.PersistentFlags().StringP("region", "r", "us-east-1", "Target AWS Region")
-	rootCmd.PersistentFlags().StringToStringP("tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.tapir.yaml)")
+	// 	rootCmd.PersistentFlags().StringP("prefix", "p", "", "Alam Name Preix")
+	// 	rootCmd.PersistentFlags().StringP("region", "r", "us-east-1", "Target AWS Region")
+	// 	rootCmd.PersistentFlags().StringToStringP("tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
 
-	viper.BindPFlag("prefix", rootCmd.PersistentFlags().Lookup("prefix"))
-	viper.BindPFlag("region", rootCmd.PersistentFlags().Lookup("region"))
-	viper.BindPFlag("tags", rootCmd.PersistentFlags().Lookup("tags"))
+	// 	viper.BindPFlag("prefix", rootCmd.PersistentFlags().Lookup("prefix"))
+	// 	viper.BindPFlag("region", rootCmd.PersistentFlags().Lookup("region"))
+	// 	viper.BindPFlag("tags", rootCmd.PersistentFlags().Lookup("tags"))
 }
 
 func initConfig() {

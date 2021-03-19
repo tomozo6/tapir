@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/gookit/color"
@@ -16,12 +15,10 @@ import (
 // disableCmd represents the disable command
 var disableCmd = &cobra.Command{
 	Use:   "disable",
-	Short: "Disables CloudWatchAlarms",
-	Long:  "Disables CloudWatchAlarms",
+	Short: "Disables CloudWatchAlarm actions",
+	Long:  "Disables CloudWatchAlarm actions",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		start := time.Now()
-
 		prefix := viper.GetString("prefix")
 		region := viper.GetString("region")
 		tags := viper.GetStringMapString("tags")
@@ -45,12 +42,17 @@ var disableCmd = &cobra.Command{
 		} else {
 			fmt.Println(color.Green.Sprint("Success"))
 		}
-
-		end := time.Now()
-		fmt.Println(end.Sub(start))
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(disableCmd)
+
+	disableCmd.Flags().StringP("prefix", "p", "", "Alam Name Preix")
+	disableCmd.Flags().StringP("region", "r", "us-east-1", "Target AWS Region")
+	disableCmd.Flags().StringToStringP("tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
+
+	viper.BindPFlag("prefix", disableCmd.Flags().Lookup("prefix"))
+	viper.BindPFlag("region", disableCmd.Flags().Lookup("region"))
+	viper.BindPFlag("tags", disableCmd.Flags().Lookup("tags"))
 }

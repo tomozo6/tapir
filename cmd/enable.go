@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"tapir/mypkg"
@@ -15,12 +15,10 @@ import (
 // enableCmd represents the enable command
 var enableCmd = &cobra.Command{
 	Use:   "enable",
-	Short: "Enables CloudWatchAlarms",
-	Long:  "Enables CloudWatchAlarms",
+	Short: "Enables CloudWatchAlarm actions",
+	Long:  "Enables CloudWatchAlarm actions",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		start := time.Now()
-
 		prefix := viper.GetString("prefix")
 		region := viper.GetString("region")
 		tags := viper.GetStringMapString("tags")
@@ -42,14 +40,19 @@ var enableCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("Failure Enable Alarm Actions. %v", err)
 		} else {
-			fmt.Println("Success")
+			fmt.Println(color.Green.Sprint("Success"))
 		}
-
-		end := time.Now()
-		fmt.Println(end.Sub(start))
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(enableCmd)
+
+	enableCmd.Flags().StringP("prefix", "p", "", "Alam Name Preix")
+	enableCmd.Flags().StringP("region", "r", "us-east-1", "Target AWS Region")
+	enableCmd.Flags().StringToStringP("tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
+
+	viper.BindPFlag("prefix", enableCmd.Flags().Lookup("prefix"))
+	viper.BindPFlag("region", enableCmd.Flags().Lookup("region"))
+	viper.BindPFlag("tags", enableCmd.Flags().Lookup("tags"))
 }
