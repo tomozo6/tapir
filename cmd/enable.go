@@ -47,12 +47,4 @@ var enableCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(enableCmd)
-
-	enableCmd.Flags().StringP("prefix", "p", "", "Alam Name Preix")
-	enableCmd.Flags().StringP("region", "r", "us-east-1", "Target AWS Region")
-	enableCmd.Flags().StringToStringP("tags", "t", nil, "Input the tags you want to filter. ex) project=test,env=dev")
-
-	viper.BindPFlag("prefix", enableCmd.Flags().Lookup("prefix"))
-	viper.BindPFlag("region", enableCmd.Flags().Lookup("region"))
-	viper.BindPFlag("tags", enableCmd.Flags().Lookup("tags"))
 }
