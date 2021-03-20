@@ -11,34 +11,44 @@ import (
 
 func getMetricAlarms(svc *cloudwatch.Client, prefix string) []types.MetricAlarm {
 
-	// DescribeAlarmsのパラメーター設定
-	params := &cloudwatch.DescribeAlarmsInput{}
-	params.MaxRecords = aws.Int32(100)
+	var metricAlarms []types.MetricAlarm
+    var nextToken *string
 
-	if prefix == "" {
-		params.AlarmNamePrefix = nil
-	} else {
-		params.AlarmNamePrefix = aws.String(prefix)
-	}
+	// 全てのレコードを取得するためにfor文でループさせる(nextToken)
+	for {
+		// DescribeAlarmsのパラメーター設定
+		params := &cloudwatch.DescribeAlarmsInput{}
+		params.MaxRecords = aws.Int32(100)
 
-	// params := &cloudwatch.DescribeAlarmsInput{
-	// 	MaxRecords:      aws.Int32(100),
-	// 	AlarmNamePrefix: nil,
-	// 	// AlarmNamePrefix: aws.String(prefix),
-	// 	// AlarmNamePrefix: aws.String("HTTP Monitoring"),
-	// }
-	// fmt.Println(prefix)
+		// Prefix
+		if prefix == "" {
+			params.AlarmNamePrefix = nil
+		} else {
+			params.AlarmNamePrefix = aws.String(prefix)
+		}
 
-	resp, err := svc.DescribeAlarms(context.TODO(), params)
+		// NextToken(最初は必ずnil)
+		if nextToken == nil {
+			params.NextToken = nil
+		} else {
+			params.NextToken = nextToken
+		}
 
-	if err != nil {
-		fmt.Printf("メトリクスの取得に失敗しました。 %v", err)
-	}
+		resp, err := svc.DescribeAlarms(context.TODO(), params)
 
-	metricAlarms := []types.MetricAlarm{}
+		if err != nil {
+			fmt.Printf("メトリクスの取得に失敗しました。 %v", err)
+		}
 
-	for _, v := range resp.MetricAlarms {
-		metricAlarms = append(metricAlarms, v)
+		for _, v := range resp.MetricAlarms {
+			metricAlarms = append(metricAlarms, v)
+		}
+
+		if resp.NextToken == nil {
+			break
+		}
+
+		nextToken = resp.NextToken
 	}
 
 	return metricAlarms
