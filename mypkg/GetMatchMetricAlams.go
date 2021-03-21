@@ -12,7 +12,7 @@ func GetMatchMetricAlams(svc *cloudwatch.Client, prefix string, tags map[string]
 
 	// Filter by tags
 	if len(tags) > 0 {
-		metricAlarms = getArnsContainsTags(svc, metricAlarms, tags)
+		metricAlarms, _ = getContainsTagsAlarms(svc, metricAlarms, tags)
 	}
 
 	return metricAlarms
