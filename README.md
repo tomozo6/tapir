@@ -25,11 +25,15 @@ Available Commands:
   disable     Disables CloudWatchAlarm actions
   enable      Enables CloudWatchAlarm actions
   help        Help about any command
+  showtags    show tags for CloudWatchAlarm
   status      Displays the 'ActinsEnabled' and 'State' status of the CloudWatchAlarms
 
 Flags:
-      --config string   config file (default is $HOME/.tapir.yaml)
-  -h, --help            help for tapir
+      --config string         config file (default is $HOME/.tapir.yaml)
+  -h, --help                  help for tapir
+  -p, --prefix string         Alam Name Preix
+  -r, --region string         Target AWS Region (default "us-east-1")
+  -t, --tags stringToString   for filter. ex) project=test,env=dev (default [])
 
 Use "tapir [command] --help" for more information about a command.
 ```
@@ -140,6 +144,30 @@ $ tapir status -t project=tomozo6,env=prod
 +-----------------------------------------------------------------------+----------------+-------------+
 ```
 
+## showtags
+```
+$ tapir showtags
+Using config file: /Users/tomohiro.b.sasaki/.tapir.yaml
+Use the arrow keys to navigate: ↓ ↑ → ←
+Which alarms tags do you want to show?
+  👉 httpMonitoring_dev_tomozo6-ecSiteTopPage(https://dev.tomozo6.com)
+    httpMonitoring_prod_tomozo6-ecSiteTopPage(https://www.tomozo6.com)
+    httpMonitoring_prod_tomozo6-ecSiteTopPageOld(https://old.tomozo6.com)
+    httpMonitoring_stg_tomozo6-ecSiteTopPage(https://stg.tomozo6.com)
+    resourceMonitoring_dev_tomozo6-ec2-cpuUtilizationIsHigh
+    resourceMonitoring_prod_tomozo6-ec2-cpuUtilizationIsHigh
+    resourceMonitoring_stg_tomozo6-ec2-cpuUtilizationIsHigh
+
+--------- Tags ----------
+
+{created_by: terraform}
+
+{env: dev}
+
+{project: tomozo6}
+
+{type: http}
+```
 # Licence
 MIT
 
